@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 
 /**
@@ -23,7 +24,12 @@ public class AndroidJokesterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_android_jokester, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_android_jokester, container, false);
+        TextView jokeTextView = (TextView) rootView.findViewById(R.id.joke_textView);
+        String joke = getActivity().getIntent().getStringExtra(AndroidJokesterActivity.EXTRA_JOKE);
+        jokeTextView.setText(joke);
+        return rootView;
+
     }
 
 }

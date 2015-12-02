@@ -1,24 +1,26 @@
 package com.example;
 
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class JavaJokester {
 
 
-    private int mNumOfJokes = 5;
+    private static int sNumOfJokes = 5;
 
-    public String tellMeAJoke() {
-        switch (ThreadLocalRandom.current().nextInt(0, mNumOfJokes)) {
+    public static String tellMeAJoke() {
+        switch (new Random().nextInt(sNumOfJokes)) {
             case 0:
-                return "Joke 1";
+                return "Q. Why did the orange use suntan lotion? A. He started to peel.";
             case 1:
-                return "Joke 2";
+                return "Q: How do you know if a restaurant has a clown as a chef?" +
+                        " A: When the food tastes funny";
             case 2:
-                return "Joke 3";
+                return "Q. When were vowels invented? A. When u and i were born.";
             case 3:
-                return "Joke 4";
+                return "Q. What's orange and sounds like a parrot? A. A carrot.";
             case 4:
-                return "Joke 5";
+                return "Q. What goes ha, ha plonk? A. Someone laughing their head off.";
         }
 
         return "Error: You've reached the anti-joke!";
