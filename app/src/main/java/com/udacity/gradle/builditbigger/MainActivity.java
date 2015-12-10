@@ -52,5 +52,9 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
+    public void tellGceModuleJoke(View view) {
+        // TODO: 12/10/2015 finish this here method
+    }
+
 
 }

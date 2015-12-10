@@ -4,4 +4,6 @@
     <string name="button_text">Tell me a joke, Java Jokester</string>
     <string name="action_settings">Settings</string>
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="gce_module_instructions">Press button for joke from the GCE module</string>
+    <string name="gce_button_text">Tell me a joke, GCE Jokester</string>
 </resources>
