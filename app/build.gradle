@@ -25,7 +25,6 @@ dependencies {
     // Added for AdMob
     compile project(':javajokester')
     compile project(':androidjokester')
-    //compile project(':backend')
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.google.android.gms:play-services:8.3.0'
     compile project(path: ':backend', configuration: 'android-endpoints')
