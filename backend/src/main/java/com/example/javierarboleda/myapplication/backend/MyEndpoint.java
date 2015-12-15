@@ -12,6 +12,8 @@ import com.google.api.server.spi.config.ApiNamespace;
 
 import javax.inject.Named;
 
+import com.example.JavaJokester;
+
 /**
  * An endpoint class we are exposing
  */
@@ -30,9 +32,12 @@ public class MyEndpoint {
      * A simple endpoint method that takes a name and says Hi back
      */
     @ApiMethod(name = "sayHi")
-    public MyBean sayHi(@Named("name") String name) {
+    public MyBean sayHi() {
+
+        String joke = JavaJokester.tellMeAJoke();
+
         MyBean response = new MyBean();
-        response.setData("Hi, " + name);
+        response.setData(joke);
 
         return response;
     }

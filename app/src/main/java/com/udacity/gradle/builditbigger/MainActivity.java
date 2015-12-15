@@ -56,7 +56,7 @@ public class MainActivity extends ActionBarActivity {
 
     public void tellGceModuleJoke(View view) {
         // TODO: 12/10/2015 finish this here method
-        new EndpointsAsyncTask().execute(new Pair<Context, String>(this, "Manfred"));
+        new EndpointsAsyncTask().execute(this);
     }
 
 
