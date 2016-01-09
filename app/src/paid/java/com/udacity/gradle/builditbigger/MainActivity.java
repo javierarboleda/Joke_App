@@ -12,7 +12,7 @@ import android.view.View;
 import com.javierarboleda.androidjokester.AndroidJokesterActivity;
 import com.example.JavaJokester;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements EndpointsAsyncTask.AsyncCallback {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,5 +59,14 @@ public class MainActivity extends ActionBarActivity {
         new EndpointsAsyncTask().execute(this);
     }
 
+
+    @Override
+    public void jokeDownloadedCallback(String joke) {
+
+        Intent intent = new Intent(this, AndroidJokesterActivity.class);
+        intent.putExtra(AndroidJokesterActivity.EXTRA_JOKE, joke);
+
+        startActivity(intent);
+    }
 
 }

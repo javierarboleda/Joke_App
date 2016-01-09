@@ -23,6 +23,10 @@ class EndpointsAsyncTask extends AsyncTask<Context, Void, String> {
     private static MyApi myApiService = null;
     private Context context;
 
+    public interface AsyncCallback {
+        void jokeDownloadedCallback(String joke);
+    }
+
     @Override
     protected String doInBackground(Context... params) {
         if(myApiService == null) {  // Only do this once
@@ -58,12 +62,9 @@ class EndpointsAsyncTask extends AsyncTask<Context, Void, String> {
     protected void onPostExecute(String result) {
         //Toast.makeText(context, result, Toast.LENGTH_LONG).show();
 
-        String joke = result;
-
-        Intent intent = new Intent(context, AndroidJokesterActivity.class);
-        intent.putExtra(AndroidJokesterActivity.EXTRA_JOKE, joke);
-
-        context.startActivity(intent);
+        if (context != null) {
+            ((AsyncCallback) context).jokeDownloadedCallback(result);
+        }
 
 
     }
