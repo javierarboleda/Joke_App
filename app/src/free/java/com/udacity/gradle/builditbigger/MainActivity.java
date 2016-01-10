@@ -6,16 +6,28 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
 import com.example.JavaJokester;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.javierarboleda.androidjokester.AndroidJokesterActivity;
 
 public class MainActivity extends ActionBarActivity implements EndpointsAsyncTask.AsyncCallback {
+
+    private Button mGceJokeButton;
+    private Button mJavaJokeButton;
+    private InterstitialAd mInterstitialAd;
+    private Intent mIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mGceJokeButton = (Button) findViewById(R.id.gce_joke_button);
+        mJavaJokeButton = (Button) findViewById(R.id.java_jokester_button);
     }
 
 
@@ -48,12 +60,20 @@ public class MainActivity extends ActionBarActivity implements EndpointsAsyncTas
         Intent intent = new Intent(this, AndroidJokesterActivity.class);
         intent.putExtra(AndroidJokesterActivity.EXTRA_JOKE, joke);
 
-        startActivity(intent);
+        mIntent = intent;
 
+        mGceJokeButton.setEnabled(false);
+        mJavaJokeButton.setEnabled(false);
+
+        loadInterstitialAd();
     }
 
     public void tellGceModuleJoke(View view) {
         // TODO: 12/10/2015 finish this here method
+
+        mGceJokeButton.setEnabled(false);
+        mJavaJokeButton.setEnabled(false);
+
         new EndpointsAsyncTask().execute(this);
     }
 
@@ -64,7 +84,42 @@ public class MainActivity extends ActionBarActivity implements EndpointsAsyncTas
         Intent intent = new Intent(this, AndroidJokesterActivity.class);
         intent.putExtra(AndroidJokesterActivity.EXTRA_JOKE, joke);
 
-        startActivity(intent);
+        mIntent = intent;
+
+        loadInterstitialAd();
+    }
+
+    public void loadInterstitialAd() {
+
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+                mJavaJokeButton.setEnabled(true);
+                mGceJokeButton.setEnabled(true);
+                startActivity(mIntent);
+            }
+
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                mInterstitialAd.show();
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                super.onAdFailedToLoad(errorCode);
+            }
+        });
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mInterstitialAd.loadAd(adRequest);
+
+
+
     }
 
 }

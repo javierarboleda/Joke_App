@@ -1,6 +1,5 @@
 package com.udacity.gradle.builditbigger;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -14,10 +13,14 @@ import com.example.JavaJokester;
 
 public class MainActivity extends ActionBarActivity implements EndpointsAsyncTask.AsyncCallback {
 
+    private Button mGceJokeButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mGceJokeButton = (Button) findViewById(R.id.gce_joke_button);
     }
 
 
@@ -56,6 +59,9 @@ public class MainActivity extends ActionBarActivity implements EndpointsAsyncTas
 
     public void tellGceModuleJoke(View view) {
         // TODO: 12/10/2015 finish this here method
+
+        mGceJokeButton.setEnabled(false);
+
         new EndpointsAsyncTask().execute(this);
     }
 
@@ -67,6 +73,8 @@ public class MainActivity extends ActionBarActivity implements EndpointsAsyncTas
         intent.putExtra(AndroidJokesterActivity.EXTRA_JOKE, joke);
 
         startActivity(intent);
+
+        mGceJokeButton.setEnabled(true);
     }
 
 }

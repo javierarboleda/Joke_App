@@ -36,6 +36,7 @@
         android:layout_below="@+id/gce_instructions_text_view"
         android:text="@string/gce_button_text"
         android:onClick="tellGceModuleJoke"
+        android:id="@+id/gce_joke_button"
 
         />
 
