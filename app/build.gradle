@@ -26,6 +26,9 @@ android {
             applicationId "com.udacity.gradle.builditbigger.free"
         }
     }
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 dependencies {
@@ -36,4 +39,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.google.android.gms:play-services:8.3.0'
     compile project(path: ':backend', configuration: 'android-endpoints')
+    testCompile 'junit:junit:4.11'
 }

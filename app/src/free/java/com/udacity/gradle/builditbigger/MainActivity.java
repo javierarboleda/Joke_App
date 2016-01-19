@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 import com.example.JavaJokester;
 import com.google.android.gms.ads.AdListener;
@@ -14,12 +15,13 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.javierarboleda.androidjokester.AndroidJokesterActivity;
 
-public class MainActivity extends ActionBarActivity implements EndpointsAsyncTask.AsyncCallback {
+public class MainActivity extends ActionBarActivity {
 
     private Button mGceJokeButton;
     private Button mJavaJokeButton;
     private InterstitialAd mInterstitialAd;
     private Intent mIntent;
+    private ProgressBar mSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +30,9 @@ public class MainActivity extends ActionBarActivity implements EndpointsAsyncTas
 
         mGceJokeButton = (Button) findViewById(R.id.gce_joke_button);
         mJavaJokeButton = (Button) findViewById(R.id.java_jokester_button);
+
+        mSpinner = (ProgressBar) findViewById(R.id.progressBar1);
+        mSpinner.setVisibility(View.GONE);
     }
 
 
@@ -74,20 +79,34 @@ public class MainActivity extends ActionBarActivity implements EndpointsAsyncTas
         mGceJokeButton.setEnabled(false);
         mJavaJokeButton.setEnabled(false);
 
-        new EndpointsAsyncTask().execute(this);
+        mSpinner.setVisibility(View.VISIBLE);
+
+        mIntent = new Intent(this, AndroidJokesterActivity.class);
+
+        new EndpointsAsyncTask().execute(new JokeDownloadedCallback() {
+            @Override
+            public void jokeDownloaded(String joke) {
+                mIntent.putExtra(AndroidJokesterActivity.EXTRA_JOKE, joke);
+
+                mSpinner.setVisibility(View.GONE);
+
+                loadInterstitialAd();
+
+            }
+        });
     }
 
 
-    @Override
-    public void jokeDownloadedCallback(String joke) {
-
-        Intent intent = new Intent(this, AndroidJokesterActivity.class);
-        intent.putExtra(AndroidJokesterActivity.EXTRA_JOKE, joke);
-
-        mIntent = intent;
-
-        loadInterstitialAd();
-    }
+//    @Override
+//    public void jokeDownloadedCallback(String joke) {
+//
+//        Intent intent = new Intent(this, AndroidJokesterActivity.class);
+//        intent.putExtra(AndroidJokesterActivity.EXTRA_JOKE, joke);
+//
+//        mIntent = intent;
+//
+//        loadInterstitialAd();
+//    }
 
     public void loadInterstitialAd() {
 
@@ -98,6 +117,7 @@ public class MainActivity extends ActionBarActivity implements EndpointsAsyncTas
             @Override
             public void onAdClosed() {
                 super.onAdClosed();
+                mSpinner.setVisibility(View.GONE);
                 mJavaJokeButton.setEnabled(true);
                 mGceJokeButton.setEnabled(true);
                 startActivity(mIntent);
@@ -112,6 +132,10 @@ public class MainActivity extends ActionBarActivity implements EndpointsAsyncTas
             @Override
             public void onAdFailedToLoad(int errorCode) {
                 super.onAdFailedToLoad(errorCode);
+                mSpinner.setVisibility(View.GONE);
+                mJavaJokeButton.setEnabled(true);
+                mGceJokeButton.setEnabled(true);
+                startActivity(mIntent);
             }
         });
 

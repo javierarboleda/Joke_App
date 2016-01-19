@@ -1,6 +1,5 @@
 package com.udacity.gradle.builditbigger;
 
-import android.content.Context;
 import android.test.AndroidTestCase;
 
 import java.util.concurrent.ExecutionException;
@@ -10,17 +9,48 @@ import java.util.concurrent.ExecutionException;
  */
 public class EndpointsAsyncTaskTest extends AndroidTestCase {
 
-    public void testGceEndpoint() {
-        Context context = null;
-        try {
-            String joke = new EndpointsAsyncTask().execute(context).get();
-            assertNotNull(joke);
-            assertFalse(joke.isEmpty());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+    private EndpointsAsyncTask endpointsAsyncTask;
+
+    private JokeDownloadedCallback mJokeDownloadedCallback;
+
+    private String mJoke;
+
+    private boolean mJokeDownloaded;
+
+    protected void setUp() throws Exception {
+        super.setUp();
+
+        endpointsAsyncTask = new EndpointsAsyncTask();
+
+        mJokeDownloadedCallback = new JokeDownloadedCallback() {
+            @Override
+            public void jokeDownloaded(String joke) {
+                mJoke = joke;
+                mJokeDownloaded = true;
+            }
+        };
+    }
+
+    public void testGceEndpoint() throws InterruptedException, ExecutionException {
+        mJoke = endpointsAsyncTask.execute(mJokeDownloadedCallback).get();
+
+        // need to check if downloaded for 10 seconds
+
+//        for(int i = 0; i < 10; i++) {
+//            Thread.sleep(500);
+//            if(mJokeDownloaded) {
+//                assertNotNull(mJoke);
+//                assertFalse(mJoke.isEmpty());
+//                break;
+//            }
+//        }
+
+
+        assertNotNull(mJoke);
+        assertFalse(mJoke.isEmpty());
+
+        // if not downloaded in 10 seconds, then fail test due to timeout
+
     }
 
 }

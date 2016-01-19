@@ -19,16 +19,12 @@ import java.io.IOException;
 /**
  * Created by javierarboleda on 12/10/15.
  */
-class EndpointsAsyncTask extends AsyncTask<Context, Void, String> {
+class EndpointsAsyncTask extends AsyncTask<JokeDownloadedCallback, Void, String> {
     private static MyApi myApiService = null;
-    private Context context;
-
-    public interface AsyncCallback {
-        void jokeDownloadedCallback(String joke);
-    }
+    private JokeDownloadedCallback mJokeDownloadedCallback;
 
     @Override
-    protected String doInBackground(Context... params) {
+    protected String doInBackground(JokeDownloadedCallback... params) {
         if(myApiService == null) {  // Only do this once
 //            MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(),
 //                    new AndroidJsonFactory(), null)
@@ -42,6 +38,8 @@ class EndpointsAsyncTask extends AsyncTask<Context, Void, String> {
 //                            abstractGoogleClientRequest.setDisableGZipContent(true);
 //                        }
 //                    });
+
+
             MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
                     .setRootUrl("https://jokes-app-backend.appspot.com/_ah/api/");
             // end options for devappserver
@@ -49,7 +47,7 @@ class EndpointsAsyncTask extends AsyncTask<Context, Void, String> {
             myApiService = builder.build();
         }
 
-        context = params[0];
+        mJokeDownloadedCallback = params[0];
 
         try {
             return myApiService.sayHi().execute().getData();
@@ -62,9 +60,7 @@ class EndpointsAsyncTask extends AsyncTask<Context, Void, String> {
     protected void onPostExecute(String result) {
         //Toast.makeText(context, result, Toast.LENGTH_LONG).show();
 
-        if (context != null) {
-            ((AsyncCallback) context).jokeDownloadedCallback(result);
-        }
+        mJokeDownloadedCallback.jokeDownloaded(result);
 
 
     }
