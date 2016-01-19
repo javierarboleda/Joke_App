@@ -26,9 +26,6 @@ android {
             applicationId "com.udacity.gradle.builditbigger.free"
         }
     }
-    testOptions {
-        unitTests.returnDefaultValues = true
-    }
 }
 
 dependencies {
